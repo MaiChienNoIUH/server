@@ -83,3 +83,8 @@ app.get('/tasks', async (req, res) => {
     res.status(500).json({ message: 'Lỗi proxy tasks' });
   }
 });
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
