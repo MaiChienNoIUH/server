@@ -23,7 +23,6 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// ✅ Proxy lấy thông tin người dùng
 app.get('/users/me', async (req, res) => {
   const token = req.headers.authorization;
 
@@ -35,10 +34,14 @@ app.get('/users/me', async (req, res) => {
       },
     });
 
-    const wpJson = await wpRes.json();
-    res.status(wpRes.status).json(wpJson);
+    const wpText = await wpRes.text(); // đọc raw nội dung để debug
+    console.log('🪵 WP /users/me status:', wpRes.status);
+    console.log('🪵 WP /users/me body:', wpText);
+
+    res.status(wpRes.status).send(wpText); // Trả lại raw
   } catch (err) {
-    res.status(500).json({ message: 'Lỗi proxy users/me' });
+    console.error('❌ Proxy /users/me error:', err);
+    res.status(500).json({ message: 'Lỗi proxy users/me', error: err.toString() });
   }
 });
 
